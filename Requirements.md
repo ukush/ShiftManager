@@ -85,4 +85,5 @@ Core operations like logging in, viewing shifts, or submitting requests should t
 
 - Offline mode for accessing schedules  
 - Two-factor authentication (2FA) for added security  
-- Basic payroll calculator based on hours worked  
+- Basic payroll calculator based on hours worked
+- AI assited rota creation tool.
