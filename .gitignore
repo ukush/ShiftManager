@@ -1,0 +1,27 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+shift_env/
+env/
+.venv/
+
+# Django specific
+shift_manager/migrations/__pycache__/
+*.sqlite3
+*.log
+media/       # uploaded files
+
+# Secrets / environment variables
+.env
+settings_local.py
+
+# IDE / editor files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
