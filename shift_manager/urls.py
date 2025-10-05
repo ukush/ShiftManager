@@ -9,5 +9,7 @@ urlpatterns = [
     # Home Page
     path('', views.index, name='index'),
     # Page that shows all users
-    path('users/', views.users, name='users')
+    path('users/', views.users, name='users'),
+    # Page that shows single user
+    path('users/<int:user_id>/', views.user, name='user')
 ]

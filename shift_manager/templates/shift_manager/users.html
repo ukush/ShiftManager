@@ -6,6 +6,7 @@
 <table>
     <thead>
         <tr>
+            <th scope="col">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Department</th>
             <th scope="col">Phone Number</th>
@@ -14,10 +15,13 @@
     <tbody>
         <tr>
             {% for user in users %}
+                <td scope="row">{{user.id}}</td>
                 <td scope="row">{{user.name}}</td>
                 <td scope="row">{{user.department}}</td>
                 <td scope="row">{{user.telephone}}</td>
-                <td><button>Shifts</Button></td>
+                <td scope="row">
+                    <a href="{% url 'user' user.id %}"><button>View Shifts</button></a>
+                </td>
         </tr>
     </tbody>
     {% empty %}
