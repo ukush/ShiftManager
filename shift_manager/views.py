@@ -17,8 +17,16 @@ def user(request, user_id):
 
     # Get all shifts assigned to this user
     shifts = Shift.objects.filter(assignment__user=user).order_by('shift_start')
-
     context = {'user': user, 'shifts': shifts}
-
     return render(request, 'shift_manager/user.html', context)
+
+def user_shifts(request, user_id):
+    """The page that displays an individual users' shifts to a manager"""
+    user = User.objects.get(id=user_id)
+    # Get all shifts assigned to this user
+    shifts = Shift.objects.filter(assignment__user=user).order_by('shift_start')
+    context = {'user': user, 'shifts': shifts}
+    return render(request, 'shift_manager/user_shifts.html', context)
+
+
 

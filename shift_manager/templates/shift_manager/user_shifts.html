@@ -1,0 +1,20 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block content %}
+
+<h2>Viewing {{user.name}}'s Shifts</h2>
+
+{% if shifts %}
+    <ul>
+    {% for shift in shifts %}
+        <li>
+            {{ shift.shift_start|date:"D, d M Y H:i" }} → 
+            {{ shift.shift_end|date:"H:i" }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>{{user.name}} has no assigned shifts.</p>
+{% endif %}
+
+{% endblock content %}
