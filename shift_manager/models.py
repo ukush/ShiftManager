@@ -32,10 +32,22 @@ class User(models.Model):
         return self.name
     
 
-class Shift(models.Model):
+class ShiftPattern(models.Model):
+    name = models.CharField(max_length=50)
     shift_start = models.DateTimeField()
     shift_end = models.DateTimeField()
-    manager = models.ForeignKey(User, on_delete=models.CASCADE)
+    department = models.ForeignKey('Department', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.name}: {self.start_time}-{self.end_time}"
+
+class Shift(models.Model):
+    pattern = models.ForeignKey(ShiftPattern, on_delete=models.CASCADE)
+    date = models.DateField()
+    manager = models.ForeignKey('User', null=True, blank=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        unique_together = ('pattern', 'date')
 
 
 class Assignment(models.Model):
