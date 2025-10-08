@@ -13,5 +13,5 @@ urlpatterns = [
     # Page that shows single user
     path('users/<int:user_id>/', views.user, name='user'),
     # Page that shows individual user's shifts
-    path('users/<int:user_id>/shifts', views.user_shifts, name='user_shifts')
+    path('users/<int:user_id>/shifts/', views.user_shifts, name='user_shifts')
 ]
