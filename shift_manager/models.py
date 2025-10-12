@@ -31,10 +31,17 @@ class User(models.Model):
         """Return a string representation of the model"""
         return self.name
     
+class ShiftPattern(models.Model):
+    name = models.CharField(max_length=50)
+    department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    
 
 class Shift(models.Model):
-    shift_start = models.DateTimeField()
-    shift_end = models.DateTimeField()
+    shift_start = models.DateField()
+    shift_end = models.DateField()
+    pattern = models.ForeignKey(ShiftPattern, null=True, blank=True, on_delete=models.CASCADE)
     manager = models.ForeignKey(User, on_delete=models.CASCADE)
 
 

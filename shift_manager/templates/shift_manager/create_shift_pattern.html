@@ -1,0 +1,13 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block content %}
+
+<p> Create Shift Pattern </p>
+
+<form action="{% url 'shift_manager:create_shift_pattern' %}" method='post'>
+    {% csrf_token %}
+    {{form.as_div}}
+    <button name='submit'>Create Shift Pattern</button>
+</form>
+
+{% endblock content %}

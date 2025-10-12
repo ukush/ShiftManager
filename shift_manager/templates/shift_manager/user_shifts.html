@@ -8,8 +8,13 @@
     <ul>
     {% for shift in shifts %}
         <li>
-            {{ shift.shift_start|date:"D, d M Y H:i" }} → 
-            {{ shift.shift_end|date:"H:i" }}
+            {{ shift.shift_start|date:"D, d M Y" }} → 
+            {{ shift.shift_end|date:"D, d M Y" }}
+            <br/>
+            <h3>Shift Pattern: {{shift.pattern.name}}</h3>
+            {{ shift.pattern.start_time }} → 
+            {{ shift.pattern.end_time }}
+
         </li>
     {% endfor %}
     </ul>

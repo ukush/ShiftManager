@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import User, Assignment, Shift
+from .forms import ShiftPatternForm
 
 def index(request):
     """The home page of the shift manager app"""
@@ -28,6 +29,18 @@ def user_shifts(request, user_id):
     context = {'user': user, 'shifts': shifts}
     return render(request, 'shift_manager/user_shifts.html', context)
 
+def create_shift_pattern(request):
+    if request.method != 'POST':
+        # No data submitted, create a blank form
+        form = ShiftPatternForm()
+    else:
+        # POST data submitted, build form
+        form = ShiftPatternForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('shift_manager:users')
 
-
+    # Display blank or invalid form
+    context = {'form': form}
+    return render(request, 'shift_manager/create_shift_pattern.html', context)
 
