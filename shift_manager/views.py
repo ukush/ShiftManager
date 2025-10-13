@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import User, Assignment, Shift, ShiftPattern
-from .forms import ShiftPatternForm, ShiftForm
+from .forms import ShiftPatternForm, GenerateDatesForm
 import datetime
 
 def index(request):
@@ -51,16 +51,17 @@ def shift_pattern(request):
     context = {'patterns': patterns}
     return render(request, 'shift_manager/shift_pattern.html', context)
 
-def create_shift(request):
+def generate_dates(request):
     """The page that allows a manager to create a shift instance"""
     generated_dates = []
+    patterns = ShiftPattern.objects.all()
 
     if request.method != 'POST':
         # No data submitted, create a blank form
-        form = ShiftForm()
+        form = GenerateDatesForm()
     else:
         # POST data submitted, build form
-        form = ShiftForm(data=request.POST)
+        form = GenerateDatesForm(data=request.POST)
         if form.is_valid():
             date_start = form.cleaned_data["shift_start_date"]
             date_end = form.cleaned_data["shift_end_date"]
@@ -75,9 +76,24 @@ def create_shift(request):
                     'day_name': day_name
                     })
 
-            # form.save()
-            #return redirect('shift_manager:create_shift')
-
     # Display blank or invalid form
-    context = {'form': form, 'generated_dates': generated_dates}
+    context = {'form': form, 'generated_dates': generated_dates, 'patterns': patterns}
     return render(request, 'shift_manager/create_shift.html', context)
+
+
+def create_shift(request):
+    if request.method == 'POST':
+        selected = request.POST.getlist('selected_shifts')
+        for item in selected:
+            date_str, pattern_id = item.split('|')
+            date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+            pattern = ShiftPattern.objects.get(id=pattern_id)
+
+            # Create shift
+            Shift.objects.create(
+                pattern=pattern,
+                date=date_obj,
+                manager=request.user  # if using login system
+            )
+
+    return redirect('shift_manager:users')  # or wherever

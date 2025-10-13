@@ -19,5 +19,7 @@ urlpatterns = [
     # Page to display shift patterns
     path('shifts/patterns/', views.shift_pattern, name='shift_pattern'),
     # Page to crate shifts
+    path('shifts/generate/', views.generate_dates, name='generate_dates'),
+    # Page to create shifts
     path('shifts/create/', views.create_shift, name='create_shift')
 ]

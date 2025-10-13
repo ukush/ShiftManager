@@ -4,19 +4,52 @@
 
 <p> Create Shift </p>
 
-<form action="{% url 'shift_manager:create_shift' %}" method='post'>
+<form action="{% url 'shift_manager:generate_dates' %}" method='post'>
     {% csrf_token %}
     {{form.as_div}}
-    <button name='submit'>Create Shifts </button>
+    <button name='submit'>Generate dates </button>
 </form>
 
 {% if generated_dates %}
-    <h3>Allocating Shifts For:</h3>
-    <ul>
+  <h3>Allocating Shifts For:</h3>
+  <form method="post" action="{% url 'shift_manager:create_shift' %}">
+    {% csrf_token %}
+    <table border="1" cellpadding="8">
+      <thead>
+        <tr>
+          <th>Day / Date</th>
+          {% for pattern in patterns %}
+            <th>
+                <b>{{pattern.name}}</b>
+            </br>
+            {{pattern.department}}
+            </br>
+            {{pattern.start_time}} - {{pattern.end_time}}
+        </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
         {% for day in generated_dates %}
-        <li>{{ day.day_name }} ({{ day.date }})</li>
+          <tr>
+            <td>{{ day.day_name }} ({{ day.date }})</td>
+            {% for pattern in patterns %}
+              <td style="text-align:center;">
+                <input 
+                  type="checkbox" 
+                  name="selected_shifts" 
+                  value="{{ day.date }}|{{ pattern.id }}"
+                >
+              </td>
+            {% endfor %}
+          </tr>
         {% endfor %}
-    </ul>
+      </tbody>
+    </table>
+
+    <br>
+    <button type="submit">Create Shifts</button>
+  </form>
 {% endif %}
 
 

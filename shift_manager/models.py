@@ -36,19 +36,13 @@ class ShiftPattern(models.Model):
     department = models.ForeignKey(Department, null=True, blank=True, on_delete=models.CASCADE)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    
-
-class Shift(models.Model):
-    shift_start = models.DateField()
-    shift_end = models.DateField()
-    pattern = models.ForeignKey(ShiftPattern, null=True, blank=True, on_delete=models.CASCADE)
-    manager = models.ForeignKey(User, on_delete=models.CASCADE)
-
 
 class Assignment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    shift = models.ForeignKey(Shift, on_delete=models.CASCADE)
+    date = models.DateField()
+    pattern = models.ForeignKey(ShiftPattern, on_delete=models.CASCADE)
+    manager = models.ForeignKey(User, related_name='managed_assignments', on_delete=models.CASCADE)
     assigned_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('user', 'shift')
+        unique_together = ('user', 'date', 'pattern')

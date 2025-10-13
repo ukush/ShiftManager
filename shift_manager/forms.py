@@ -14,7 +14,7 @@ class ShiftPatternForm(forms.ModelForm):
 #         fields = ['shift_start', 'shift_end', 'pattern', 'manager']
 #         fields = {'shift_start':'Date Start', 'shift_end':'Date End', 'pattern':'Shift Pattern', 'manager':'Shift Manager'}
 
-class ShiftForm(forms.Form):
+class GenerateDatesForm(forms.Form):
     shift_start_date = forms.DateField(
         label="Start",
         required=True,
