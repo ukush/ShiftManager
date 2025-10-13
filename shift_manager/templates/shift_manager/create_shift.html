@@ -1,0 +1,24 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block content %}
+
+<p> Create Shift </p>
+
+<form action="{% url 'shift_manager:create_shift' %}" method='post'>
+    {% csrf_token %}
+    {{form.as_div}}
+    <button name='submit'>Create Shifts </button>
+</form>
+
+{% if generated_dates %}
+    <h3>Allocating Shifts For:</h3>
+    <ul>
+        {% for day in generated_dates %}
+        <li>{{ day.day_name }} ({{ day.date }})</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+
+{% endblock content %}

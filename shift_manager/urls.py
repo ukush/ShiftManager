@@ -14,6 +14,10 @@ urlpatterns = [
     path('users/<int:user_id>/', views.user, name='user'),
     # Page that shows individual user's shifts
     path('users/<int:user_id>/shifts/', views.user_shifts, name='user_shifts'),
-    # Page to create shifts
-    path('rota/create/', views.create_shift_pattern, name='create_shift_pattern')
+    # Page to create shift patterns
+    path('shifts/create/pattern', views.create_shift_pattern, name='create_shift_pattern'),
+    # Page to display shift patterns
+    path('shifts/patterns/', views.shift_pattern, name='shift_pattern'),
+    # Page to crate shifts
+    path('shifts/create/', views.create_shift, name='create_shift')
 ]

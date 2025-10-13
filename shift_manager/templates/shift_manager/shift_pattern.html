@@ -1,0 +1,24 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block content %}
+
+<h2>Shift Patterns</h2>
+<a href="{% url 'shift_manager:create_shift_pattern' %}">Create Shift Pattern</a>
+
+{% if patterns %}
+    <ul>
+    {% for pattern in patterns %}
+        <li>
+            <b>{{pattern.name}}</b>
+            </br>
+            {{pattern.department}}
+            </br>
+            {{pattern.start_time}} - {{pattern.end_time}}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Shift Patterns</p>
+{% endif %}
+
+{% endblock content %}
