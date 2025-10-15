@@ -35,11 +35,14 @@
             <td>{{ day.day_name }} ({{ day.date }})</td>
             {% for pattern in patterns %}
               <td style="text-align:center;">
+                {% for user in users %}
+                {{user.name}}
                 <input 
                   type="checkbox" 
-                  name="selected_shifts" 
-                  value="{{ day.date }}|{{ pattern.id }}"
+                  name="shift_assignment" 
+                  value="{{ day.date|date:'Y-m-d' }}|{{ pattern.id }}|{{ user.id }}"
                 >
+                {% endfor %}
               </td>
             {% endfor %}
           </tr>

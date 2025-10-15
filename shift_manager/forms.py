@@ -1,5 +1,5 @@
 from django import forms
-from .models import ShiftPattern, Shift, Assignment
+from .models import ShiftPattern, ShiftAssignment
 
 
 class ShiftPatternForm(forms.ModelForm):
@@ -30,8 +30,8 @@ class GenerateDatesForm(forms.Form):
     
     
 
-class AssignmentForm(forms.ModelForm):
+class ShiftAssignmentForm(forms.ModelForm):
     class Meta:
-        model = Assignment
-        fields = ['user', 'shift']
-        labels = {'user': 'Assigned User', 'shift': 'Shift'}
+        model = ShiftAssignment
+        fields = ['user']
+        labels = {'user': 'Assigned User'}

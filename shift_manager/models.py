@@ -37,7 +37,7 @@ class ShiftPattern(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
 
-class Assignment(models.Model):
+class ShiftAssignment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
     pattern = models.ForeignKey(ShiftPattern, on_delete=models.CASCADE)

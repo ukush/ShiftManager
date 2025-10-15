@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import User, Assignment, Shift, ShiftPattern
+from .models import User, ShiftAssignment, ShiftPattern
 from .forms import ShiftPatternForm, GenerateDatesForm
 import datetime
 
@@ -26,7 +26,8 @@ def user_shifts(request, user_id):
     """The page that displays an individual users' shifts to a manager"""
     user = User.objects.get(id=user_id)
     # Get all shifts assigned to this user
-    shifts = Shift.objects.filter(assignment__user=user).order_by('shift_start')
+
+    shifts = ShiftAssignment.objects.filter(user=user)
     context = {'user': user, 'shifts': shifts}
     return render(request, 'shift_manager/user_shifts.html', context)
 
@@ -55,6 +56,7 @@ def generate_dates(request):
     """The page that allows a manager to create a shift instance"""
     generated_dates = []
     patterns = ShiftPattern.objects.all()
+    users = User.objects.all()
 
     if request.method != 'POST':
         # No data submitted, create a blank form
@@ -77,23 +79,38 @@ def generate_dates(request):
                     })
 
     # Display blank or invalid form
-    context = {'form': form, 'generated_dates': generated_dates, 'patterns': patterns}
+    context = {'form': form, 'generated_dates': generated_dates, 'patterns': patterns, 'users': users}
     return render(request, 'shift_manager/create_shift.html', context)
 
 
 def create_shift(request):
     if request.method == 'POST':
-        selected = request.POST.getlist('selected_shifts')
-        for item in selected:
-            date_str, pattern_id = item.split('|')
-            date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
+        assignments = request.POST.getlist('shift_assignment')
+        
+        manager = User.objects.get(id=1)
+
+
+        for item in assignments:
+            date_str, pattern_id, user_id = item.split('|')
             pattern = ShiftPattern.objects.get(id=pattern_id)
+            user = User.objects.get(id=user_id)
+
+            print(f'Shift Date: {date_str}')
+            print(f'Shift Start: {pattern.start_time}')
+            print(f'Shift End: {pattern.end_time}')
+            print(f'User: {user.name}')
+
+
+            date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+            assigned_at = datetime.datetime.now()
 
             # Create shift
-            Shift.objects.create(
-                pattern=pattern,
+            ShiftAssignment.objects.create(
+                user=user,
                 date=date_obj,
-                manager=request.user  # if using login system
+                pattern=pattern,
+                manager=manager,
+                assigned_at=assigned_at
             )
 
-    return redirect('shift_manager:users')  # or wherever
+    return redirect('shift_manager:users') 
