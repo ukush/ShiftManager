@@ -1,0 +1,13 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block content %}
+
+<p> Create User </p>
+
+<form action="{% url 'shift_manager:user_create' %}" method='post'>
+    {% csrf_token %}
+    {{form.as_div}}
+    <button name='submit'>Create User </button>
+</form>
+
+{% endblock content %}

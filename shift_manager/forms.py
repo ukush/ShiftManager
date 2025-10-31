@@ -1,5 +1,5 @@
 from django import forms
-from .models import ShiftPattern, ShiftAssignment
+from .models import ShiftPattern, ShiftAssignment, User
 
 
 class ShiftPatternForm(forms.ModelForm):
@@ -27,11 +27,15 @@ class GenerateDatesForm(forms.Form):
         widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
         input_formats=["%Y-%m-%d"]
         )
-    
-    
 
 class ShiftAssignmentForm(forms.ModelForm):
     class Meta:
         model = ShiftAssignment
         fields = ['user']
         labels = {'user': 'Assigned User'}
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['name', 'telephone', 'department', 'role']
+        labels = {'name': 'Name', 'telephone': 'Phone', 'department': 'Department', 'role': 'Role'}

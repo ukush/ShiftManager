@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import User, ShiftAssignment, ShiftPattern
-from .forms import ShiftPatternForm, GenerateDatesForm
+from .forms import ShiftPatternForm, GenerateDatesForm, UserForm
 import datetime
 
 def index(request):
@@ -18,9 +18,24 @@ def user(request, user_id):
     user = User.objects.get(id=user_id)
 
     # Get all shifts assigned to this user
-    shifts = Shift.objects.filter(assignment__user=user).order_by('shift_start')
+    shifts = ShiftAssignment.objects.filter(assignment__user=user).order_by('shift_start')
     context = {'user': user, 'shifts': shifts}
     return render(request, 'shift_manager/user.html', context)
+
+def user_create(request):
+    if request.method != 'POST':
+        # No data submitted, create a blank form
+        form = UserForm()
+    else:
+        # POST data submitted, build form
+        form = UserForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('shift_manager:users')
+
+    # Display blank or invalid form
+    context = {'form': form}
+    return render(request, 'shift_manager/user_create.html', context)
 
 def user_shifts(request, user_id):
     """The page that displays an individual users' shifts to a manager"""
