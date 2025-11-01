@@ -1,0 +1,41 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block content %}
+
+<p> All Shifts </p>
+
+<table border="1" cellspacing="0" cellpadding="8">
+    <thead>
+        <tr>
+            <th>Shift Pattern</th>
+            {% for day in all_shifts %}
+                <th>{{ day.date|date:"l (j M)" }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for pattern_name in patterns %}
+            <tr>
+                <td><strong>{{ pattern_name }}</strong></td>
+                {% for day in all_shifts %}
+                    <td>
+                        {% for shift in day.shifts %}
+                            {% if shift.pattern.pattern_name == pattern_name %}
+                                <div>
+                                    👤 {{ shift.assigned_employees|join:", " }}<br>
+                                    👨‍💼 {{ shift.shift_manager }}<br>
+                                    ⏰ {{ shift.pattern.pattern_start }} → {{ shift.pattern.pattern_end }}
+                                </div>
+                            {% endif %}
+                        {% empty %}
+                            <em>No shift</em>
+                        {% endfor %}
+                    </td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock content %}

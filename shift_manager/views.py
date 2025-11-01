@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from .models import User, ShiftAssignment, ShiftPattern
 from .forms import ShiftPatternForm, GenerateDatesForm, UserForm
 import datetime
+from itertools import groupby
+from operator import attrgetter
+from collections import defaultdict
 
 def index(request):
     """The home page of the shift manager app"""
@@ -45,6 +48,50 @@ def user_shifts(request, user_id):
     shifts = ShiftAssignment.objects.filter(user=user)
     context = {'user': user, 'shifts': shifts}
     return render(request, 'shift_manager/user_shifts.html', context)
+
+def shifts(request):
+    assignments = ShiftAssignment.objects.select_related('user', 'pattern', 'manager').order_by('date', 'pattern__name')
+
+    all_shifts = []
+    grouped_by_date = defaultdict(list)
+    for shift in assignments:
+        grouped_by_date[shift.date].append(shift)
+
+    # Collect all unique pattern names
+    unique_patterns = set()
+    for shifts_for_date in grouped_by_date.values():
+        for shift in shifts_for_date:
+            unique_patterns.add(shift.pattern.name)
+
+    for date, shifts_for_date in grouped_by_date.items():
+        shifts_list = []
+        grouped_by_pattern = defaultdict(list)
+        for shift in shifts_for_date:
+            grouped_by_pattern[shift.pattern.name].append(shift)
+
+        for pattern_name, pattern_shifts in grouped_by_pattern.items():
+            pattern_obj = pattern_shifts[0].pattern
+            shifts_list.append({
+                'pattern': {
+                    'pattern_name': pattern_obj.name,
+                    'pattern_department': getattr(pattern_obj, 'department', None),
+                    'pattern_start': pattern_obj.start_time,
+                    'pattern_end': pattern_obj.end_time,
+                },
+                'assigned_employees': [s.user.name for s in pattern_shifts],
+                'shift_manager': pattern_shifts[0].manager.name,
+            })
+
+        all_shifts.append({
+            'date': date,
+            'shifts': shifts_list
+        })
+
+    context = {
+        'all_shifts': all_shifts,
+        'patterns': sorted(unique_patterns)  # pass patterns to template
+    }
+    return render(request, 'shift_manager/shifts.html', context)
 
 def create_shift_pattern(request):
     if request.method != 'POST':

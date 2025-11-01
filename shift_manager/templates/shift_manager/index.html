@@ -1,6 +1,7 @@
 {% extends 'shift_manager/base.html' %}
 
 {% block content %}
+    <a href="{% url 'shift_manager:shifts' %}">View Shifts</a>
     <a href="{% url 'shift_manager:shift_pattern' %}">View Shift Patterns</a>
     <a href="{% url 'shift_manager:generate_dates' %}">Create Shift</a>
     <a href="{% url 'shift_manager:users' %}">View Users</a>
