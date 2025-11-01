@@ -20,6 +20,7 @@
     </ul>
 {% else %}
     <p>{{user.name}} has no assigned shifts.</p>
+    <a href="{% url 'shift_manager:generate_dates' %}">Allocate Shift</a>
 {% endif %}
 
 {% endblock content %}
