@@ -1,0 +1,14 @@
+<div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+    <div class="flex justify-between items-center">
+        <div>
+            <h3 class="font-semibold text-lg">{{ user.name }}</h3>
+            <p class="text-gray-600 text-sm">{{ user.department }}</p>
+            <p class="text-gray-500 text-xs mt-1">{{ user.telephone }}</p>
+        </div>
+        <a href="{% url 'shift_manager:user_shifts' user.id %}" 
+           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+            View Shifts
+        </a>
+    </div>
+</div>
+

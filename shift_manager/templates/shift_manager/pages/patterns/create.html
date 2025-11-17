@@ -1,0 +1,10 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block title %}Create Shift Pattern - Shift Manager{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    {% include 'shift_manager/components/_form.html' with form_action="shift_manager:create_shift_pattern" form_title="Create Shift Pattern" submit_button_text="Create Shift Pattern" %}
+</div>
+{% endblock %}
+

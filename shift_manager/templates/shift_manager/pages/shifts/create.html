@@ -1,0 +1,80 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block title %}Create Shift - Shift Manager{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h1 class="text-3xl font-bold mb-6">Create Shift</h1>
+    
+    <div class="mb-6">
+        <form action="{% url 'shift_manager:generate_dates' %}" method="post">
+            {% csrf_token %}
+            <div class="space-y-4">
+                {{ form.as_div }}
+            </div>
+            <button type="submit" name="submit" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors">
+                Generate Dates
+            </button>
+        </form>
+    </div>
+
+    {% if generated_dates %}
+        <div class="mt-8">
+            <h3 class="text-2xl font-semibold mb-4">Allocating Shifts For:</h3>
+            <form method="post" action="{% url 'shift_manager:create_shift' %}">
+                {% csrf_token %}
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border-collapse border border-gray-300">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="border border-gray-300 px-4 py-2">Day / Date</th>
+                                {% for pattern in patterns %}
+                                    <th class="border border-gray-300 px-4 py-2">
+                                        <div class="font-semibold">{{ pattern.name }}</div>
+                                        <div class="text-sm text-gray-600">{{ pattern.department }}</div>
+                                        <div class="text-sm text-gray-600">{{ pattern.start_time }} - {{ pattern.end_time }}</div>
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for day in generated_dates %}
+                                <tr>
+                                    <td class="border border-gray-300 px-4 py-2 font-medium">
+                                        {{ day.day_name }}<br>
+                                        <span class="text-sm text-gray-600">({{ day.date }})</span>
+                                    </td>
+                                    {% for pattern in patterns %}
+                                        <td class="border border-gray-300 px-4 py-2">
+                                            <div class="space-y-2">
+                                                {% for user in users %}
+                                                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded">
+                                                        <input 
+                                                            type="checkbox" 
+                                                            name="shift_assignment" 
+                                                            value="{{ day.date|date:'Y-m-d' }}|{{ pattern.id }}|{{ user.id }}"
+                                                            class="rounded"
+                                                        >
+                                                        <span class="text-sm">{{ user.name }}</span>
+                                                    </label>
+                                                {% endfor %}
+                                            </div>
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-6">
+                    <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-colors">
+                        Create Shifts
+                    </button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

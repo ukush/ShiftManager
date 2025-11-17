@@ -8,13 +8,13 @@ from collections import defaultdict
 
 def index(request):
     """The home page of the shift manager app"""
-    return render(request, 'shift_manager/index.html')
+    return render(request, 'shift_manager/pages/index.html')
 
 def users(request):
     """The page which displays all users"""
     users = User.objects.order_by('name')
     context = {'users': users}
-    return render(request, 'shift_manager/users.html', context)
+    return render(request, 'shift_manager/pages/users/list.html', context)
 
 def user(request, user_id):
     """The page which displays data about a single user"""
@@ -23,7 +23,7 @@ def user(request, user_id):
     # Get all shifts assigned to this user
     shifts = ShiftAssignment.objects.filter(assignment__user=user).order_by('shift_start')
     context = {'user': user, 'shifts': shifts}
-    return render(request, 'shift_manager/user.html', context)
+    return render(request, 'shift_manager/pages/users/detail.html', context)
 
 def user_create(request):
     if request.method != 'POST':
@@ -38,7 +38,7 @@ def user_create(request):
 
     # Display blank or invalid form
     context = {'form': form}
-    return render(request, 'shift_manager/user_create.html', context)
+    return render(request, 'shift_manager/pages/users/create.html', context)
 
 def user_shifts(request, user_id):
     """The page that displays an individual users' shifts to a manager"""
@@ -47,7 +47,7 @@ def user_shifts(request, user_id):
 
     shifts = ShiftAssignment.objects.filter(user=user)
     context = {'user': user, 'shifts': shifts}
-    return render(request, 'shift_manager/user_shifts.html', context)
+    return render(request, 'shift_manager/pages/users/shifts.html', context)
 
 def shifts(request):
     assignments = ShiftAssignment.objects.select_related('user', 'pattern', 'manager').order_by('date', 'pattern__name')
@@ -91,7 +91,7 @@ def shifts(request):
         'all_shifts': all_shifts,
         'patterns': sorted(unique_patterns)  # pass patterns to template
     }
-    return render(request, 'shift_manager/shifts.html', context)
+    return render(request, 'shift_manager/pages/shifts/list.html', context)
 
 def create_shift_pattern(request):
     if request.method != 'POST':
@@ -106,13 +106,13 @@ def create_shift_pattern(request):
 
     # Display blank or invalid form
     context = {'form': form}
-    return render(request, 'shift_manager/create_shift_pattern.html', context)
+    return render(request, 'shift_manager/pages/patterns/create.html', context)
 
 def shift_pattern(request):
     """The page that allows a manager to create a reusable shift pattern"""
     patterns = ShiftPattern.objects.all()
     context = {'patterns': patterns}
-    return render(request, 'shift_manager/shift_pattern.html', context)
+    return render(request, 'shift_manager/pages/patterns/list.html', context)
 
 def generate_dates(request):
     """The page that allows a manager to create a shift instance"""
@@ -142,7 +142,7 @@ def generate_dates(request):
 
     # Display blank or invalid form
     context = {'form': form, 'generated_dates': generated_dates, 'patterns': patterns, 'users': users}
-    return render(request, 'shift_manager/create_shift.html', context)
+    return render(request, 'shift_manager/pages/shifts/create.html', context)
 
 
 def create_shift(request):

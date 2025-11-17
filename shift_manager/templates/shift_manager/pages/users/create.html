@@ -1,0 +1,10 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block title %}Create User - Shift Manager{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    {% include 'shift_manager/components/_form.html' with form_action="shift_manager:user_create" form_title="Create User" submit_button_text="Create User" %}
+</div>
+{% endblock %}
+

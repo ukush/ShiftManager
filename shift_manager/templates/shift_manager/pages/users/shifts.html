@@ -1,0 +1,39 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block title %}{{ user.name }}'s Shifts - Shift Manager{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-3xl font-bold mb-6">Viewing {{ user.name }}'s Shifts</h2>
+    
+    {% if shifts %}
+        <div class="space-y-4">
+            {% for shift in shifts %}
+                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-semibold text-lg">Date: {{ shift.date|date:"D, d M Y" }}</h3>
+                            <h4 class="text-md font-medium mt-2">Shift Pattern: {{ shift.pattern.name }}</h4>
+                            <p class="text-gray-600 mt-1">
+                                {{ shift.pattern.start_time }} → {{ shift.pattern.end_time }}
+                            </p>
+                            <p class="text-gray-600 mt-1">
+                                <strong>Shift Manager:</strong> {{ shift.manager }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-8">
+            <p class="text-gray-500 mb-4">{{ user.name }} has no assigned shifts.</p>
+            <a href="{% url 'shift_manager:generate_dates' %}" 
+               class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors inline-block">
+                Allocate Shift
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

@@ -1,0 +1,36 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block title %}Home - Shift Manager{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-8">
+    <h1 class="text-3xl font-bold mb-6">Welcome to Shift Manager</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <a href="{% url 'shift_manager:shifts' %}" 
+           class="bg-blue-600 text-white p-6 rounded-lg hover:bg-blue-700 transition-colors text-center">
+            <h2 class="text-xl font-semibold mb-2">View Shifts</h2>
+            <p class="text-sm opacity-90">See all scheduled shifts</p>
+        </a>
+        
+        <a href="{% url 'shift_manager:shift_pattern' %}" 
+           class="bg-green-600 text-white p-6 rounded-lg hover:bg-green-700 transition-colors text-center">
+            <h2 class="text-xl font-semibold mb-2">View Patterns</h2>
+            <p class="text-sm opacity-90">Manage shift patterns</p>
+        </a>
+        
+        <a href="{% url 'shift_manager:generate_dates' %}" 
+           class="bg-purple-600 text-white p-6 rounded-lg hover:bg-purple-700 transition-colors text-center">
+            <h2 class="text-xl font-semibold mb-2">Create Shift</h2>
+            <p class="text-sm opacity-90">Schedule new shifts</p>
+        </a>
+        
+        <a href="{% url 'shift_manager:users' %}" 
+           class="bg-orange-600 text-white p-6 rounded-lg hover:bg-orange-700 transition-colors text-center">
+            <h2 class="text-xl font-semibold mb-2">View Users</h2>
+            <p class="text-sm opacity-90">Manage employees</p>
+        </a>
+    </div>
+</div>
+{% endblock %}
+

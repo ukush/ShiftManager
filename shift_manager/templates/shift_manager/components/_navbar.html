@@ -1,0 +1,15 @@
+<nav class="bg-white shadow-md">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center py-4">
+            <a href="{% url 'shift_manager:index' %}" class="text-xl font-bold text-blue-600 hover:text-blue-800">
+                Shift Manager
+            </a>
+            <div class="space-x-4">
+                <a href="{% url 'shift_manager:users' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded">Users</a>
+                <a href="{% url 'shift_manager:shifts' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded">Shifts</a>
+                <a href="{% url 'shift_manager:shift_pattern' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded">Patterns</a>
+            </div>
+        </div>
+    </div>
+</nav>
+

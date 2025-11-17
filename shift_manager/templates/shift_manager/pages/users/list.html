@@ -1,0 +1,50 @@
+{% extends 'shift_manager/base.html' %}
+
+{% block title %}Users - Shift Manager{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-lg shadow-md p-6">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-3xl font-bold">Users</h1>
+        <a href="{% url 'shift_manager:user_create' %}" 
+           class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">
+            Add User
+        </a>
+    </div>
+
+    {% if users %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full border-collapse border border-gray-300">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Name</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Department</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Phone Number</th>
+                        <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="border border-gray-300 px-4 py-2">{{ user.id }}</td>
+                            <td class="border border-gray-300 px-4 py-2 font-medium">{{ user.name }}</td>
+                            <td class="border border-gray-300 px-4 py-2">{{ user.department }}</td>
+                            <td class="border border-gray-300 px-4 py-2">{{ user.telephone }}</td>
+                            <td class="border border-gray-300 px-4 py-2">
+                                <a href="{% url 'shift_manager:user_shifts' user.id %}" 
+                                   class="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
+                                    View Shifts
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-gray-500 text-center py-8">No users found. <a href="{% url 'shift_manager:user_create' %}" class="text-blue-600 hover:underline">Create one now</a>.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
